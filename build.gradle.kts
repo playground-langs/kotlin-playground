@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    runtimeOnly(kotlin("reflect"))
 }
 
 tasks.test {
