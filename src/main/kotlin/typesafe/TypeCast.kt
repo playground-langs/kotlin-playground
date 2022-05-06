@@ -11,6 +11,7 @@ fun main() {
     println(a == c)
 
     val any = getAny()
+    //as转换类型不匹配会报异常
     val message: String = any as? String ?: ""
     println(message)
 }
