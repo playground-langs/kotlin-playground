@@ -30,13 +30,13 @@ class CSharpProgrammer : Worker {
 /**
  * 手工实现委托
  */
-class ManagerDelegate(private val worker: Worker = JavaProgrammer()) {
+class ManagerDelegate(private val worker: Worker = JavaProgrammer()) : Worker {
 
-    fun work() {
+    override fun work() {
         worker.work()
     }
 
-    fun takeVacation() {
+    override fun takeVacation() {
         worker.takeVacation()
     }
 }
@@ -97,7 +97,8 @@ class C(private val a: A, private val b: B) : A by a, B by b {
 }
 
 fun main() {
-    ManagerDelegate().work()
+    val md: Worker = ManagerDelegate()
+    md.work()
     Manager1().work()
     Manager2(CSharpProgrammer()).work()
     Manager2(JavaProgrammer()).work()
