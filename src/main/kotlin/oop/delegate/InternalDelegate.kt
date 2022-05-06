@@ -1,4 +1,4 @@
-package oop
+package oop.delegate
 
 import kotlin.properties.Delegates.observable
 import kotlin.properties.Delegates.vetoable

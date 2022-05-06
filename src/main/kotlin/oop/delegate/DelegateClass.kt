@@ -1,4 +1,4 @@
-package oop
+package oop.delegate
 
 interface Worker {
     fun work()

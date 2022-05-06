@@ -1,4 +1,4 @@
-package oop
+package oop.delegate
 
 import kotlin.reflect.KProperty
 
