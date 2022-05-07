@@ -1,4 +1,4 @@
-package typesafe
+package typesafe.generic
 
 fun main() {
     val bananaArray = arrayOf(Banana(), Banana(), Banana())
@@ -15,7 +15,7 @@ fun main() {
     //协变 之后a不允许调用任何写方法，只读
     val a: Array<out Fruit> = Array<Banana>(1) { Banana() }
     //逆变 之后可写,但只能读出Any?不能确定具体类型
-    val b: Array<in Fruit> = Array<Any>(1) { Orange() }
+    val b: Array<in Fruit> = Array<Any>(1) { Any() }
 }
 
 open class Fruit
