@@ -8,7 +8,7 @@ package typesafe.generic.boolext.v2
 /**
  * 中间对象 承载yes的返回值并作为otherwise的调用方
  * Any? 是所有类型的父类型
- * Nothing是所有类的子类型
+ * Nothing是所有类的子类型(从子类化的角度理解)
  *
  * 泛型设计思路:
  * 1.观察泛型参数位置确定 协变/不变 逆变/不变
