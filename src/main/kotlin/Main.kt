@@ -21,5 +21,4 @@ fun main(args: Array<String>) {
     """.trimMargin()
     println(multiline)
     func.greet()
-    func.change(Person("tom", 12))
 }

@@ -1,6 +1,7 @@
 package func
 
-import Person
+import oop.oo.Person
+
 
 fun main() {
     greet()
