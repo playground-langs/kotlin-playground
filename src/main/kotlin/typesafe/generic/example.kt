@@ -16,6 +16,10 @@ fun main() {
     val a: Array<out Fruit> = Array<Banana>(1) { Banana() }
     //逆变 之后可写,但只能读出Any?不能确定具体类型
     val b: Array<in Fruit> = Array<Any>(1) { Any() }
+    //<*> 相当于 <out Any?> 不能添加,获取出来的类型是Any?
+    val list: MutableList<*> = mutableListOf(1, "test")
+    //list.add(2, 1)
+    val any: Any? = list[0]
 }
 
 open class Fruit
@@ -109,5 +113,24 @@ inline fun <reified T> findFirst(books: List<Book>): T {
 
 fun testFindFirst() {
     findFirst<Fiction>(books)
+}
+
+
+open class Plate<T>
+
+class A : Plate<Int>()
+class B : Plate<String>()
+
+/**
+ * 泛型类必须声明泛型 与java不同(带泛型的类型是对应不带泛型的类型的子类型:Plate<X> <: Plate)
+ * kotlin中无法使用不带泛型的Plate
+ */
+fun test() {
+    val p1: Plate<Int> = A()
+    //error
+    //val p: Plate = Plate<Int>()
+    val p2 = Plate<Boolean>()
+    val a: A = A()
+
 }
 
