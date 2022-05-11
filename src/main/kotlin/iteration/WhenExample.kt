@@ -40,3 +40,12 @@ fun systemInfo(): String =
         in 2..16 -> "You have $numberOfCores cores"
         else -> "$numberOfCores cores"
     }
+
+/**
+ * 无参when必须加else
+ */
+fun onParamWhen(num: Int) = when {
+    num >= 1 -> 1
+    num < 1 -> 0
+    else -> 0
+}
