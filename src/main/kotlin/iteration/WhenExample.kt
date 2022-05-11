@@ -1,5 +1,7 @@
 package iteration
 
+import oop.oo.*
+
 fun main() {
     println(whatToDo("Friday"))
     println(whatToDo("test"))
@@ -44,8 +46,28 @@ fun systemInfo(): String =
 /**
  * 无参when必须加else
  */
-fun onParamWhen(num: Int) = when {
-    num >= 1 -> 1
-    num < 1 -> 0
+fun noParamWhen(num: Int) = when {
+    num in 1..100 -> 1
+    num !in 1..100 -> 0
     else -> 0
+}
+
+/**
+ * 除sealed is 和 enum外即使逻辑上穷尽分支也要加else
+ */
+fun paramWhen(num: Int) = when (num) {
+    in 1..100 -> 1
+    !in 1..100 -> 0
+    else -> 0
+}
+
+/**
+ * 需要使用as显式提示类型
+ */
+fun <T : Card> sealedGenericWhen(card: T) = when (card as Card) {
+    is Ace -> "ace"
+    is King -> "king"
+    is Queen -> "queen"
+    is Jack -> "jack"
+    is Pip -> "pip"
 }
