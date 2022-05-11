@@ -60,3 +60,77 @@ class Worker(val first: String, val last: String) {
         this.location = location
     }
 }
+
+/**
+ * 内联类
+ */
+@JvmInline
+value class HASH(val hash: String) {
+
+}
+
+/**
+ * 具有内联类参数的函数会编译为带随机后缀的函数，使用@JvmName注解指定生成方法名以便java调用kotlin
+ */
+@JvmName("printHash")
+fun printHash(input: HASH) {
+    println(input)
+}
+
+fun main() {
+    printHash(HASH("test"))
+    val m = MachineOperator("tom")
+    val singleton = MachineOperator
+    //error
+    //val r1: Runnable = m
+    val r2: Runnable = MachineOperator
+    //伴生对象可以定义显式名称，无显式名称时使用Companion
+    val r3: Runnable = MachineOperator.Companion
+}
+
+/**
+ * 伴生对象-类的单例伙伴 java中类的静态属性定义在伴生对象里
+ * 伴生对象可以继承类实现接口,伴生对象的父类和父接口与对应类无关
+ */
+class MachineOperator(val name: String) {
+    fun checkin() = checkedin++
+    fun checkout() = checkedin--
+
+    companion object : Runnable {
+        var checkedin = 0
+        fun minimumBreak() = "15 minutes every 2 hours"
+        override fun run() {
+            TODO("Not yet implemented")
+        }
+    }
+}
+
+
+/**
+ * 伴生对象实现工厂方法模式
+ */
+interface Product {
+    companion object Factory {
+        /**
+         * 使用操作符重载以便使用()进行调用
+         */
+        operator fun invoke(type: ProductType) = when (type) {
+            ProductType.A -> A()
+            ProductType.B -> B()
+            ProductType.C -> C()
+        }
+    }
+}
+
+enum class ProductType {
+    A, B, C
+}
+
+class A : Product
+class B : Product
+class C : Product
+
+fun testProduct() {
+    val p = Product(ProductType.A)
+}
+
