@@ -17,6 +17,7 @@ dependencies {
     runtimeOnly(kotlin("reflect"))
     // kotlin coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    //kotlin script
     implementation(kotlin("script-runtime"))
 }
 

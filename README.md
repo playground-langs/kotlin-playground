@@ -1,0 +1,3 @@
+kotlin核心功能代码示例
+
+可使用kotlin worksheet进行用例测试，替代使用main函数的形式
