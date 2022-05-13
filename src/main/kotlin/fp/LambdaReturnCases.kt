@@ -237,8 +237,9 @@ inline fun invokeTwoCrossInline(n: Int, action1: (Int) -> Unit, crossinline acti
     action1(n)
     action2(n)
     println("exit invokeTwo $n")
-    //TODO 测试crossinline的内联传递效果
-    //exchangeInline(n, action2)
+    //crossinline内联传递的函数必须也是inline
+    //inline exchangeInline函数时同时会inline action2，以此实现crossinline的语义
+    exchangeInline(n, action2)
     //传递lambda
     return { i -> action2(i * n) }
 }
@@ -252,6 +253,8 @@ return 1;
 }
 report(1);
 System.out.println((Object) ("exit invokeTwo " + 1));
+System.out.println((Object) "exchange");
+report(1);
 Function1 func = new LambdaReturnCasesKt$testInvokeTwoCrossInline$.inlined.invokeTwoCrossInline.1(1);
 func.invoke(1);
 return 0;
@@ -269,12 +272,12 @@ fun testInvokeTwoCrossInline(): Int {
         //error 标记有crossinline和noinline的lambda无法非局部return
         //return
     })
-    //此处不会inline
+    //返回的函数不会inline
     func(1)
     return 0
 }
 
-fun exchangeInline(n: Int, action: (Int) -> Unit) {
+inline fun exchangeInline(n: Int, action: (Int) -> Unit) {
     println("exchange")
     action(n)
 }
