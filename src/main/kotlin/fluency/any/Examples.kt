@@ -1,7 +1,10 @@
 package fluency.any
 
 /**
- * let also apply run
+ * let also apply run with(与run等效只是调用方式不同)
+ * 如果lambda传递了参数，则在lambda内部可以使用词法作用域中的this
+ * 如果未传递参数，则使用调用者作为this
+ * lambda默认使用词法作用域this，可通过定义lambda接收者改变内部this为接收者
  */
 
 class Context {
@@ -109,6 +112,21 @@ fun testUseRun() {
 }
 
 /**
+ * 使用with
+ */
+fun testUseWith() {
+    val result = with(Mailer()) {
+        from(from)
+        to(to)
+        subject(subject)
+        body(body)
+        send()
+    }
+    println(result)
+}
+
+
+/**
  * let将对象作为参数传递 同时保留上下文this
  */
 fun createMailer() = Mailer()
@@ -164,5 +182,33 @@ fun testUseAlso() {
 }
 
 /**
- * takeUnless takeIf with repeat run
+ * takeUnless takeIf repeat run
  */
+/**
+ * 执行一段代码而不用定义函数
+ */
+fun testRun() {
+    run {
+        println("just run it")
+    }
+}
+
+fun testRepeat() {
+    repeat(5) {
+        println("$it:just repeat it")
+    }
+}
+
+/**
+ * 条件成立则返回调用者的值否则返回null
+ */
+fun testTakeIf(a: Int): Int? {
+    return a.takeIf { it > 10 }
+}
+
+/**
+ * 条件不成立则返回调用者的值否则返回null
+ */
+fun testTakeUnless(a: Int): Int? {
+    return a.takeUnless { it > 10 }
+}
