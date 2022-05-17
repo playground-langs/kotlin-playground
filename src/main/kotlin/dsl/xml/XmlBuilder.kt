@@ -6,11 +6,13 @@ package dsl.xml
  * 2.根据dsl形式从外到内逐步实现
  * 3.可根据dsl形式判断出返回值和参数
  */
+@XmlMarker
 class XmlBuilder {
     fun root(rootName: String, block: Node.() -> Unit): Node =
         Node(rootName).apply(block)
 }
 
+@XmlMarker
 class Node(val name: String) {
     private val attributes = mutableMapOf<String, String>()
     private val children = mutableListOf<Node>()
@@ -64,4 +66,24 @@ fun testXmlDsl() {
         }
     }
     println(xml.toString())
+}
+
+@DslMarker
+annotation class XmlMarker
+
+/**
+ * 可以使用DslMarker注解限制嵌套lambda隐式调用父接收方的方法
+ * 标注此注解只允许调用直接接收方的方法
+ */
+fun testDslOutOfScope() {
+    xml {
+        root("root") {
+            element("test") {
+                //error
+                //root("root1") {}
+                //但仍可以显式调用,但不推荐
+                this@xml.root("root1") {}
+            }
+        }
+    }
 }
