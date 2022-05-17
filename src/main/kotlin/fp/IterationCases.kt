@@ -72,6 +72,9 @@ fun testEagerInnerIteration() {
 }
 
 /**
+ * Sequence不支持并行
+ */
+/**
  * 使用序列 延迟计算 避免直接使用内部迭代产生大量中间结果
  * 仅需要O(n)
  */
