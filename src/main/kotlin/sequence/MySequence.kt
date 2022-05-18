@@ -61,10 +61,55 @@ class MyFilteringSequence<T>(
             nextItem = null
             return result as T
         }
-
     }
 }
 
+/**
+ * 未优化take与drop连用情形,类似窥孔优化，如:
+ * 1.链路上有take(0)则后续无需执行 需要一个特殊的EmptySequence处理
+ * 2.take(n1).take(n2),n2>=n1时等价于take(n1)
+ * 3.take(n1).drop(n2),n2>=n1时产生空序列;n2<n1时等价于take(start,end)
+ * 4.drop(n1).drop(n2)==drop(n1+n2)
+ * ...
+ * 如有多个take/drop组合可优化掉大量中间sequence对象，从而省去大量相关计算，优化性能
+ */
+class MyTakeSequence<T>(val sequence: MySequence<T>, val n: Int) : MySequence<T> {
+    override fun iterator(): Iterator<T> = object : Iterator<T> {
+        val iterator = sequence.iterator()
+        var count = n
+        override fun hasNext(): Boolean {
+            return iterator.hasNext() && count > 0
+        }
 
+        override fun next(): T {
+            count--
+            return iterator.next()
+        }
+    }
+}
+
+class MyDropSequence<T>(val sequence: MySequence<T>, val n: Int) : MySequence<T> {
+    override fun iterator(): Iterator<T> = object : Iterator<T> {
+        val iterator = sequence.iterator()
+        var count = n
+
+        private fun drop() {
+            while (count > 0 && iterator.hasNext()) {
+                iterator.next()
+                count--
+            }
+        }
+
+        override fun hasNext(): Boolean {
+            drop()
+            return iterator.hasNext()
+        }
+
+        override fun next(): T {
+            drop()
+            return iterator.next()
+        }
+    }
+}
 
 

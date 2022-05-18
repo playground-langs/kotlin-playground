@@ -17,6 +17,14 @@ fun <T, R> MySequence<T>.map(transformer: (T) -> R): MySequence<R> {
     return MyTransformingSequence(this, transformer)
 }
 
+fun <T> MySequence<T>.take(n: Int): MySequence<T> {
+    return MyTakeSequence(this, n)
+}
+
+fun <T> MySequence<T>.drop(n: Int): MySequence<T> {
+    return MyDropSequence(this, n)
+}
+
 fun <T> MySequence<T>.first(): T {
     val iterator = this.iterator()
     if (!iterator.hasNext()) {

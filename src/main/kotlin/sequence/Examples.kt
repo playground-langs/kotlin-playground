@@ -20,9 +20,13 @@ fun testMySequence() {
     mySequence.count().run(::println)
     mySequence.toList().run(::println)
     mySequence.forEach { println("foreach $it") }
+    mySequence.take(2).take(1).toList().run(::println)
+    mySequence.take(0).toList().run(::println)
+    mySequence.take(6).take(4).toList().run(::println)
 }
 
-fun main() {
-    testSequence()
-    testMySequence()
+fun testMyDrop() {
+    (1..10).asMySequence().filter { println("filter $it");it > 5 }.map { println("map $it");it * 2 }.drop(2)
+        .map { println("map2 $it");it * 2 }.toList()
+        .run(::println)
 }
