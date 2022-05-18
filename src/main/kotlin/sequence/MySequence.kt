@@ -1,7 +1,7 @@
 package sequence
 
 /**
- * 实现延迟的filter->map->first/last/forEach/count/take/toList
+ * 实现延迟的filter->map->take/drop->first/last/forEach/count/sum/toList
  */
 interface MySequence<out T> {
     operator fun iterator(): Iterator<T>
