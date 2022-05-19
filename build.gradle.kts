@@ -31,7 +31,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-property:$kotestVersion")
     testImplementation("io.kotest:kotest-framework-datatest:5.2.0")
-
+    testImplementation("io.kotest:kotest-property:$kotestVersion")
     //mockk
     testImplementation("io.mockk:mockk:1.12.4")
 }
