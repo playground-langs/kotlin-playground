@@ -1,10 +1,11 @@
 package test.junit
 
 import org.junit.jupiter.api.Test
+import kotlin.test.assertTrue
 
 class CanaryTest {
     @Test
     fun testCanary() {
-        assert(true == true)
+        assertTrue(true)
     }
 }
