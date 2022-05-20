@@ -2,6 +2,7 @@ package recursive
 
 import recursive.Closure.fibClosure
 import recursive.Closure.memoize
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 import kotlin.system.measureTimeMillis
 
@@ -59,8 +60,45 @@ class Memoize<T, R>(val closure: (T) -> R) {
     }
 }
 
+/**
+ * 可以使用ReadOnlyProperty<T,V>和ReadWriteProperty<T,V>自定生成要重写的方法，比较方便
+ * T为委托对象的类型 一般声明为Any?
+ * V为委托者的类型 需要由getValue返回
+ */
+class MemoizeObject<T, R>(val closure: (T) -> R) : ReadOnlyProperty<Any?, (T) -> R> {
+    private val cache = mutableMapOf<T, R>()
+    override fun getValue(thisRef: Any?, property: KProperty<*>): (T) -> R = { k: T ->
+        cache.getOrPut(k) { closure(k) }
+    }
+}
+
+
+val fibDelegate1: (Int) -> Long by MemoizeObject { n: Int ->
+    when (n) {
+        0, 1 -> 1L
+        else -> fibDelegate1(n - 1) + fibDelegate1(n - 2)
+    }
+}
+
+/**
+ * 使用匿名对象实现临时记忆化
+ */
+val fibDelegate2: (Int) -> Long by object : ReadOnlyProperty<Any?, (Int) -> Long> {
+    private val cache = mutableMapOf<Int, Long>()
+
+    override fun getValue(thisRef: Any?, property: KProperty<*>): (Int) -> Long = { k ->
+        cache.getOrPut(k) {
+            when (k) {
+                0, 1 -> 1L
+                else -> fibDelegate2(k - 1) + fibDelegate2(k - 2)
+            }
+        }
+    }
+}
+
+
 //委托不需要延迟初始化，使用更简洁，推荐这种用法
-val fibDelegate: (Int) -> Long by Memoize<Int, Long> { n: Int ->
+val fibDelegate: (Int) -> Long by Memoize { n: Int ->
     when (n) {
         0, 1 -> 1L
         else -> fibDelegate(n - 1) + fibDelegate(n - 2)
@@ -110,5 +148,11 @@ fun testWithMemoize() {
 fun testWithDelegate() {
     measureTimeMillis {
         fibDelegate(45)
+    }.run(::println)
+    measureTimeMillis {
+        fibDelegate1(45)
+    }.run(::println)
+    measureTimeMillis {
+        fibDelegate2(45)
     }.run(::println)
 }
