@@ -14,6 +14,8 @@ class MappedPoliteString(private val datasource: MutableMap<String, Any>) {
 class PostComment(private val datasource: MutableMap<String, Any>) {
     private val title: String by datasource
     private val likes: Int by datasource
+
+    //MappedPoliteString方法中的thisRef为当前PostComment示例
     private val comment: String by MappedPoliteString(datasource)
 
     override fun toString(): String {

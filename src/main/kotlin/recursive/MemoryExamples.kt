@@ -62,7 +62,7 @@ class Memoize<T, R>(val closure: (T) -> R) {
 
 /**
  * 可以使用ReadOnlyProperty<T,V>和ReadWriteProperty<T,V>自定生成要重写的方法，比较方便
- * T为委托对象的类型 一般声明为Any?
+ * T为持有委托者对象的对象 一般声明为Any?
  * V为委托者的类型 需要由getValue返回
  */
 class MemoizeObject<T, R>(val closure: (T) -> R) : ReadOnlyProperty<Any?, (T) -> R> {
