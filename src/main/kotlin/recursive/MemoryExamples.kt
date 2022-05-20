@@ -147,12 +147,12 @@ fun testWithMemoize() {
 
 fun testWithDelegate() {
     measureTimeMillis {
-        fibDelegate(45)
+        fibDelegate(45).run(::println)
     }.run(::println)
     measureTimeMillis {
-        fibDelegate1(45)
+        fibDelegate1(45).run(::println)
     }.run(::println)
     measureTimeMillis {
-        fibDelegate2(45)
+        fibDelegate2(45).run(::println)
     }.run(::println)
 }
