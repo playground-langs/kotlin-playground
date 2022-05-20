@@ -14,7 +14,7 @@ import io.kotest.property.checkAll
  * FreeSpec 支持测试嵌套
  */
 class ShrinkingTests : FreeSpec({
-    //失败用例会自动缩小范围找到最接近的用例
+    //失败用例会自动缩小范围找到初始失败用例
     //! bang符号忽略测试 f: 仅运行标记测试忽略其他测试
     "!test default shrinking" - {
         Arb.positiveInt(20000).checkAll { i ->
