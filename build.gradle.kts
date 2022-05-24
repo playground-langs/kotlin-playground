@@ -34,6 +34,8 @@ dependencies {
     testImplementation("io.kotest:kotest-property:$kotestVersion")
     //mockk
     testImplementation("io.mockk:mockk:1.12.4")
+    //Arrow
+    implementation("io.arrow-kt:arrow-core:1.1.2")
 }
 
 tasks.test {
