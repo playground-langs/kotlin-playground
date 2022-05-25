@@ -36,6 +36,8 @@ dependencies {
     testImplementation("io.mockk:mockk:1.12.4")
     //Arrow
     implementation("io.arrow-kt:arrow-core:1.1.2")
+    //guava
+    implementation("com.google.guava:guava:31.1-jre")
 }
 
 tasks.test {

@@ -42,6 +42,7 @@ fun runTaskSync() {
 
 /**
  * 协程默认继承父上下文 包括执行线程
+ * todo: 彻底弄清协程执行顺序机制 单线程中线程调度运行机制 非对称协程运行机制 重要!!!
  */
 fun runTaskAsyncInMain() {
     println("start")
