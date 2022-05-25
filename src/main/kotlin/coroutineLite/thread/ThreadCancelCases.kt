@@ -4,8 +4,9 @@ import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
 /**
- * runnable不能响应中断 不能抛出中断异常
- * callable可以响应中断 可以抛出中断异常
+ * runnable不能以抛出中断异常的形式直接响应中断,需要主动检测中断信号并自行中断程序执行且需要传播中断信号
+ * callable可以直接以抛出中断异常响应中断同时传播了中断(异常传播)
+ * kotlin不区分全部为运行时异常
  */
 
 fun <R> asyncDoSomethingCancellable(
