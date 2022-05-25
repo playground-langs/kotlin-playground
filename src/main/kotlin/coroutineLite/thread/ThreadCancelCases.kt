@@ -3,6 +3,11 @@ package coroutineLite.thread
 import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
+/**
+ * runnable不能响应中断 不能抛出中断异常
+ * callable可以响应中断 可以抛出中断异常
+ */
+
 fun <R> asyncDoSomethingCancellable(
     action: () -> R,
     onSuccess: (R) -> Unit,
@@ -40,7 +45,7 @@ fun testCancelableThread() {
         it.printStackTrace()
     }
     val thread = asyncDoSomethingCancellable(action, onSuccess, onError)
-    //不添加sleep大概率由主动响应中断处理
+    //不添加sleep大概率在中断响应点1响应中断
     Thread.sleep(5)
     thread.interrupt()
 }
