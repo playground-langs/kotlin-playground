@@ -52,7 +52,7 @@ fun testCancelableThread() {
 }
 
 /**
- * 循环内有中断响应点才能中断 且不能静默吞掉中断异常 需要重新抛出中断异常 传递中断
+ * 循环内有中断响应点才能中断 且不能静默吞掉中断异常 需要重新抛出中断异常或重新传递中断状态
  */
 fun testNoncancellableThread() {
     val action: () -> String = {

@@ -1,6 +1,6 @@
 package com.techzealot.kt;
 
-public class ThreadCases {
+public class ThreadCancelCases {
 
     public static void main(String[] args) {
         Thread t = new Thread(new Runnable() {

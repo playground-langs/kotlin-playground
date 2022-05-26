@@ -6,6 +6,7 @@ import async.url3
 import com.google.common.util.concurrent.*
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
+import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadPoolExecutor
 import kotlin.system.measureTimeMillis
 
@@ -25,11 +26,10 @@ fun jsonFuture(url: String, args: String): ListenableFuture<String> {
 }
 
 fun main() {
-    error = true
+    error = false
     measureTimeMillis {
         testCallback()
     }.run(::println)
-    Thread.sleep(3000)
     singleExecutor.shutdownNow()
 }
 
@@ -39,6 +39,7 @@ fun main() {
  * 不推荐使用
  */
 fun testCallback() {
+    val queue = SynchronousQueue<String>()
     val future1 = jsonFuture(url1, "")
     Futures.addCallback(future1, object : FutureCallback<String> {
         override fun onSuccess(r1: String?) {
@@ -48,7 +49,8 @@ fun testCallback() {
                     val future3 = jsonFuture(url3, r2!!)
                     Futures.addCallback(future3, object : FutureCallback<String> {
                         override fun onSuccess(r3: String?) {
-                            println(r3)
+                            println("$r3 ${Thread.currentThread()}")
+                            queue.put(r3)
                         }
 
                         override fun onFailure(t: Throwable) {
@@ -69,4 +71,6 @@ fun testCallback() {
         }
 
     }, singleExecutor)
+    val r3 = queue.take()
+    println("$r3 ${Thread.currentThread()}")
 }

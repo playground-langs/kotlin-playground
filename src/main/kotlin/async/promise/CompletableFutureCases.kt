@@ -4,6 +4,7 @@ import async.url1
 import async.url2
 import async.url3
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.SynchronousQueue
 import kotlin.system.measureTimeMillis
 
 /**
@@ -36,12 +37,18 @@ fun main() {
  * 错误的使用实例
  */
 fun testCallbackHell() {
+    //使用同步移交队列在主线程中拿到结果 主线程无法获取产生r3响应的future无法get
+    val queue = SynchronousQueue<String>()
+    //与Promise类似每个操作(如thenApply等)都会产生新的Future
     jsonCompletableFuture(url1, "")
         .thenApply { r1 ->
             jsonCompletableFuture(url2, r1)
                 .thenApply { r2 ->
                     jsonCompletableFuture(url3, r2)
-                        .thenApply { println(it) }
+                        .thenApply { r3 ->
+                            queue.put(r3)
+                            println("$r3 ${Thread.currentThread()}")
+                        }
                         .exceptionally { println(it) }
                 }.exceptionally {
                     println(it)
@@ -51,24 +58,30 @@ fun testCallbackHell() {
             it.printStackTrace()
             null
         }
-    //默认ForkJoinPool线程为daemon 后台线程
-    Thread.sleep(2000)
+    //阻塞等待异步响应
+    val r3 = queue.take()
+    println("$r3 ${Thread.currentThread()}")
 }
 
 /**
+ * 默认ForkJoinPool线程为daemon后台线
  * 正确 推荐使用
+ * 缺点:结果的获取脱离了主调用流程 亦即 主线程后续流程中无法非阻塞的获取调用结果 get()未完成时会阻塞主线程
  */
 fun testBetterWay() {
-    jsonCompletableFuture(url1, "")
+    val future = jsonCompletableFuture(url1, "")
         .thenCompose { r1 ->
             jsonCompletableFuture(url2, r1)
         }.thenCompose { r2 ->
             jsonCompletableFuture(url3, r2)
-        }.thenApply {
-            println(it)
-        }.exceptionally {
-            it.printStackTrace()
         }
-    //默认ForkJoinPool线程为daemon 后台线程
-    Thread.sleep(2000)
+    future.thenApply {
+        println("$it ${Thread.currentThread()}")
+    }.exceptionally {
+        it.printStackTrace()
+    }
+    //必须获取对应的Future才能获取相应结果
+    val r3 = future.get()
+    //主线程中很难非阻塞获取异步结果 需要调用get阻塞主线程
+    println("$r3 ${Thread.currentThread()}")
 }
