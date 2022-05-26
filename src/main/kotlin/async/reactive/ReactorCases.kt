@@ -11,8 +11,10 @@ import reactor.core.publisher.Flux
 import java.util.concurrent.SynchronousQueue
 
 /**
- * 原生挂起函数
+ * coroutine结合第三方reactor框架
+ * 更推荐原生异步reactor支持Flow
  */
+
 suspend fun jsonAsync(url: String, args: String): String {
     //IO
     delay(500)
@@ -83,5 +85,11 @@ suspend fun reactorWay() {
         }
     }
     flux.collectList().awaitSingle().run(::println)
+}
+
+/**
+ * 原生reactor 非协程
+ */
+fun testNonSuspendFlux() {
     Flux.range(1, 10).subscribe(::println)
 }
