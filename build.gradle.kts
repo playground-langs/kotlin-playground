@@ -1,9 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.20"
+    kotlin("jvm") version "1.6.21"
     application
     id("org.jetbrains.kotlinx.kover") version "0.5.1"
+    idea
 }
 
 group = "com.techzealot"
@@ -16,7 +17,7 @@ repositories {
 
 dependencies {
     runtimeOnly(kotlin("reflect"))
-    // kotlin coroutine
+    // kotlin coroutine 确保与kotlin("jvm")使用相同版本的标准库 便于调试
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.1")
     //kotlin script
