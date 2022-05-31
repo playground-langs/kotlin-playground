@@ -2,10 +2,20 @@ package coroutine.ext.generator
 
 import kotlin.coroutines.*
 
+/**
+ * 使用协程基础API实现生成器
+ * creatCoroutine+resume
+ * startCoroutine
+ * suspendCoroutine 主动挂起 协程体内有异步会自动挂起
+ */
 interface Generator<T> {
     operator fun iterator(): Iterator<T>
 }
 
+/**
+ * 不允许生成器内调用其他挂起函数
+ */
+@RestrictsSuspension
 interface GeneratorScope<T> {
     suspend fun yield(value: T)
 }

@@ -3,6 +3,7 @@ package coroutine.ext.generator
 fun main() {
     pythonGenerator()
     kotlinGenerator()
+    fibonacci()
 }
 
 fun pythonGenerator() {
@@ -25,4 +26,18 @@ fun kotlinGenerator() {
     for (n in sequence) {
         println(n)
     }
+}
+
+fun fibonacci() {
+    val fib = sequence<Long> {
+        yield(1L)
+        var current = 1L
+        var next = 1L
+        while (true) {
+            yield(next)
+            next += current
+            current = next - current
+        }
+    }
+    fib.take(10).forEach(::println)
 }
