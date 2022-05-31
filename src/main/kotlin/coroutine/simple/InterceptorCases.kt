@@ -16,7 +16,7 @@ fun main() {
 fun suspendFunc() {
     suspend {
         thread {
-            log("thread")
+            log("coroutine/thread")
         }
         1
     }.startCoroutine(object : Continuation<Int> {

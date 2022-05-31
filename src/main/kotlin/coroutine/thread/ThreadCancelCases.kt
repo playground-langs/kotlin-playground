@@ -1,4 +1,4 @@
-package coroutineLite.thread
+package coroutine.thread
 
 import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
