@@ -6,11 +6,10 @@ fun main() {
 }
 
 fun pythonGenerator() {
-    val generator = generator<Int> {
-        yield(1)
-        yield(2)
-        yield(3)
-        yield(4)
+    val generator = generator<Int> { start ->
+        for (i in 1..4) {
+            yield(start + i)
+        }
     }
     val nums = generator(10)
     for (n in nums) {
