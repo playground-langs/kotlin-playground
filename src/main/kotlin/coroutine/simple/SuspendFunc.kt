@@ -1,5 +1,6 @@
 package coroutine.simple
 
+import coroutine.log
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlin.concurrent.thread
@@ -12,7 +13,7 @@ import kotlin.coroutines.suspendCoroutine
 
 suspend fun main() {
     //main
-    println("where am I ${Thread.currentThread()}")
+    log("1:where am I")
     delayLittle()
     //coroutine
     println("main end ${Thread.currentThread()}")
@@ -20,13 +21,13 @@ suspend fun main() {
 
 suspend fun delayLittle() {
     //main
-    println("where am I ${Thread.currentThread()}")
+    println("2:where am I ${Thread.currentThread()}")
     coroutineScope {
         delay(5000)
-        println("sync in coroutine ${Thread.currentThread()}")
+        log("sync in coroutine")
     }
     //coroutine
-    println("where am I ${Thread.currentThread()}")
+    println("3:where am I ${Thread.currentThread()}")
 }
 
 suspend fun syncFun(): Int {
