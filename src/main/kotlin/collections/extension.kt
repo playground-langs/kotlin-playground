@@ -108,3 +108,9 @@ fun map() {
         println("$k:$v")
     }
 }
+
+fun quickCreateListWithItems() {
+    List(10) {
+        it * 2
+    }.run(::println)
+}
