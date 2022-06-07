@@ -1,5 +1,7 @@
 package fluency.any
 
+import java.io.File
+
 /**
  * let also apply run with(与run等效只是调用方式不同)
  * 如果lambda传递了参数，则在lambda内部可以使用词法作用域中的this
@@ -211,4 +213,13 @@ fun testTakeIf(a: Int): Int? {
  */
 fun testTakeUnless(a: Int): Int? {
     return a.takeUnless { it > 10 }
+}
+
+/**
+ * 使用Closable.use自动关闭
+ */
+fun testUse() {
+    File("test.txt").inputStream().buffered().use {
+        it.readAllBytes()
+    }
 }
