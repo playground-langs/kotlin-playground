@@ -126,11 +126,11 @@ class CarX(year: Int, color: String) : Vehicle(year, color) {
 }
 
 /**
- * 密封类 类似于rust中的枚举 有限直接子类的无限实例
- * 同一个包内可继承
+ * 密封类 类似于rust中的枚举 有限直接子类的无限实例 类型可数 值不可数
+ * 同一个包内可继承 构造器可为private或protected
  * 子类可选择是否可被继承 使用when时保证直接子级穷尽即可
  */
-sealed class Card(val suit: Suit)
+sealed class Card protected constructor(val suit: Suit)
 
 open class Ace(suit: Suit) : Card(suit)
 class King(suit: Suit) : Card(suit)

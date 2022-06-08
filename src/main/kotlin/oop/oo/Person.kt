@@ -1,5 +1,9 @@
 package oop.oo
 
+/**
+ * 数据类不能被继承 破坏了equals的对称性和传递性
+ * 可以通过noarg和allopen插件使之与Javabean一致 不推荐
+ */
 data class Person(val name: String, val age: Int? = null)
 
 fun main() {
