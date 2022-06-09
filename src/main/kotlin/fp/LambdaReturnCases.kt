@@ -282,6 +282,38 @@ inline fun exchangeInline(n: Int, action: (Int) -> Unit) {
     action(n)
 }
 
+/**
+ * 循环内的局部return会编译为循环语句内的continue
+ */
+fun testLoopReturn(): String {
+    (1..6).forEach here@{
+        if (it == 3) {
+            return@here
+        }
+        if (it == 5) {
+            return "outer"
+        }
+        println(it)
+    }
+    return "direct"
+}
+
+/**
+ * 非循环内的两种return都是返回当前lambda的结束处 后续代码永远无法执行到
+ */
+fun testNoLoopReturn() {
+    "test1".let here@{
+        println("before $it")
+        return@here 1
+        println("after1 $it")
+    }
+    "test2".let here@{
+        println("before $it")
+        return
+        println("after1 $it")
+    }
+}
+
 
 
 

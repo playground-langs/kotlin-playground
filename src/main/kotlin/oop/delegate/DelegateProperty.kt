@@ -1,12 +1,13 @@
 package oop.delegate
 
+import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class MappedPoliteString(private val datasource: MutableMap<String, Any>) {
-    operator fun getValue(thisRef: Any?, property: KProperty<*>) =
+class MappedPoliteString(private val datasource: MutableMap<String, Any>) : ReadWriteProperty<Any?, String> {
+    override operator fun getValue(thisRef: Any?, property: KProperty<*>) =
         (datasource[property.name] as? String)?.replace("stupid", "s*****") ?: ""
 
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
+    override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
         datasource[property.name] = value
     }
 }
@@ -41,4 +42,43 @@ fun main() {
     println(post1)
     println(post2)
     mutableMapOf(1 to 2)
+    val b = ModelB()
+    b.load()
+    val list = (b.readOnlyList as MutableList)
+    list.add("world")
+    println(list)
+    println(b.readOnlyList::class)
+}
+
+/**
+ * 两个属相之间通过属性引用进行委托
+ * 1.版本升级的兼容性
+ * 2.可见性控制
+ */
+//版本升级兼容性控制
+class ModelA {
+    var v1: String = ""
+    var v2: String by ::v1
+}
+
+//可见性控制
+class ModelB {
+    //对于简单类型的可见性处理
+    var readOnly: Int = 0
+        private set
+
+    //对于复合类型如Map
+    //这种写法无法控制外部的读写
+    val data1: MutableList<String> = mutableListOf()
+
+    //这种写法可以一定程度上控制外部不可写但可以强转来写 而且内部也无法方便的写 不推荐
+    val data2: List<String> = mutableListOf()
+
+    //解决方案 1.对外只暴露只读List(缺点:可通过强转获取写能力) 2.委托给内部可读可写属性 推荐
+    val readOnlyList: List<String> by ::_backStore
+    private val _backStore = mutableListOf<String>()
+
+    fun load() {
+        _backStore.add("hello")
+    }
 }
