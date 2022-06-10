@@ -4,5 +4,6 @@ kotlin核心功能代码示例
 
 参考书籍:
 
-1. programming kotlin create elegant expressive and performant jvm and android applications(中文名:Kotlin编程实战:
-   创建优雅富于表现力和高性能的JVM与 Android应用程序)
+1. programming kotlin create elegant expressive and performant jvm and android applications
+   (Kotlin编程实战:创建优雅富于表现力和高性能的JVM与 Android应用程序)
+2. 深入理解kotlin协程

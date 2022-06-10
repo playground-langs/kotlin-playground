@@ -44,7 +44,7 @@ operator fun IntList.component4(): Int? = when (this) {
 fun intListOf(vararg values: Int): IntList {
     return when (values.size) {
         0 -> IntList.Nil
-        else -> IntList.Element(values[0], intListOf(*values.slice(1 until values.size).toIntArray()))
+        else -> IntList.Element(values[0], intListOf(*values.sliceArray(1 until values.size)))
     }
 }
 

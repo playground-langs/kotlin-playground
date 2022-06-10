@@ -283,6 +283,12 @@ inline fun exchangeInline(n: Int, action: (Int) -> Unit) {
 }
 
 /**
+ * lambda return总结:
+ * 带标签的return会返回至标签块的结束处
+ * 非局部return只能在inline lambda中使用，会退出外层函数 lambda默认返回最后一个表达式
+ */
+
+/**
  * 循环内的局部return会编译为循环语句内的continue
  */
 fun testLoopReturn(): String {
