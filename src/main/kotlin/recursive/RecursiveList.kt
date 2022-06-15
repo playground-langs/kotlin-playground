@@ -11,7 +11,7 @@ sealed class IntList {
         }
     }
 
-    data class Element(val head: Int, val tail: IntList) : IntList() {
+    data class Cons(val head: Int, val tail: IntList) : IntList() {
         override fun toString(): String {
             return "[$head,$tail]"
         }
@@ -22,29 +22,29 @@ sealed class IntList {
  * 实现解构
  */
 operator fun IntList.component1(): Int? = when (this) {
-    is IntList.Element -> head
+    is IntList.Cons -> head
     IntList.Nil -> null
 }
 
 operator fun IntList.component2(): Int? = when (this) {
-    is IntList.Element -> tail.component1()
+    is IntList.Cons -> tail.component1()
     IntList.Nil -> null
 }
 
 operator fun IntList.component3(): Int? = when (this) {
-    is IntList.Element -> tail.component2()
+    is IntList.Cons -> tail.component2()
     IntList.Nil -> null
 }
 
 operator fun IntList.component4(): Int? = when (this) {
-    is IntList.Element -> tail.component3()
+    is IntList.Cons -> tail.component3()
     IntList.Nil -> null
 }
 
 fun intListOf(vararg values: Int): IntList {
     return when (values.size) {
         0 -> IntList.Nil
-        else -> IntList.Element(values[0], intListOf(*values.sliceArray(1 until values.size)))
+        else -> IntList.Cons(values[0], intListOf(*values.sliceArray(1 until values.size)))
     }
 }
 
@@ -52,7 +52,7 @@ fun intListOf(vararg values: Int): IntList {
  * sum
  */
 fun IntList.sum(): Int = when (this) {
-    is IntList.Element -> head + tail.sum()
+    is IntList.Cons -> head + tail.sum()
     IntList.Nil -> 0
 }
 

@@ -11,7 +11,7 @@ sealed class RecursiveList<out T> {
         }
     }
 
-    data class Element<E>(val head: E, val tail: RecursiveList<E>) : RecursiveList<E>() {
+    data class Cons<E>(val head: E, val tail: RecursiveList<E>) : RecursiveList<E>() {
         override fun toString(): String {
             return "[$head,$tail]"
         }
@@ -22,29 +22,29 @@ sealed class RecursiveList<out T> {
  * 实现解构
  */
 operator fun <T> RecursiveList<T>.component1(): T? = when (this) {
-    is RecursiveList.Element -> head
+    is RecursiveList.Cons -> head
     RecursiveList.Nil -> null
 }
 
 operator fun <T> RecursiveList<T>.component2(): T? = when (this) {
-    is RecursiveList.Element -> tail.component1()
+    is RecursiveList.Cons -> tail.component1()
     RecursiveList.Nil -> null
 }
 
 operator fun <T> RecursiveList<T>.component3(): T? = when (this) {
-    is RecursiveList.Element -> tail.component2()
+    is RecursiveList.Cons -> tail.component2()
     RecursiveList.Nil -> null
 }
 
 operator fun <T> RecursiveList<T>.component4(): T? = when (this) {
-    is RecursiveList.Element -> tail.component3()
+    is RecursiveList.Cons -> tail.component3()
     RecursiveList.Nil -> null
 }
 
 fun <T> recursiveListOf(vararg values: T): RecursiveList<T> {
     return when (values.size) {
         0 -> RecursiveList.Nil
-        else -> RecursiveList.Element(values[0], recursiveListOf(*values.sliceArray(1 until values.size)))
+        else -> RecursiveList.Cons(values[0], recursiveListOf(*values.sliceArray(1 until values.size)))
     }
 }
 
