@@ -1,5 +1,11 @@
 package typesafe.generic
 
+/**
+ * 协变:泛型类型的子类型关系与泛型实参子类型关系一致 协变点在返回值位置
+ * 逆变:泛型类型的子类型关系与泛型实参子类型关系相反 逆变点在入参位置
+ * 不变:泛型类型不存在类似于泛型实参的子类型关系
+ * 星投影:协变取上限 逆变取下限(Nothing) 适用于类型描述不能用于类型构造
+ */
 fun main() {
     val bananaArray = arrayOf(Banana(), Banana(), Banana())
     val bananaList = listOf(Banana(), Banana(), Banana())
@@ -16,10 +22,17 @@ fun main() {
     val a: Array<out Fruit> = Array<Banana>(1) { Banana() }
     //逆变 之后可写,但只能读出Any?不能确定具体类型
     val b: Array<in Fruit> = Array<Any>(1) { Any() }
-    //<*> 相当于 <out Any?> 不能添加,获取出来的类型是Any?
+    //<*> 此处读取时相当于Any?,写入时相当于Nothing，不可写入
     val list: MutableList<*> = mutableListOf(1, "test")
     //list.add(2, 1)
     val any: Any? = list[0]
+
+    val f: Map<*, *> = HashMap<Number, Any>()
+    //类型擦除 不能使用具体类型
+    if (f is HashMap<*, *>) {
+        f[1]
+        (f as HashMap<Number, Any>)[2] = "b"
+    }
 }
 
 open class Fruit
