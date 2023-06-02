@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm") version "1.8.20"
     application
     id("org.jetbrains.kotlinx.kover") version "0.5.1"
     idea
@@ -19,8 +17,8 @@ repositories {
 dependencies {
     implementation(kotlin("reflect"))
     // kotlin coroutine 确保与kotlin("jvm")使用相同版本的标准库 便于调试
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.0")
     //kotlin script
     implementation(kotlin("script-runtime"))
     //kotlin html dsl
@@ -43,12 +41,12 @@ dependencies {
     implementation("com.google.guava:guava:31.1-jre")
 }
 
-tasks.test {
-    useJUnitPlatform()
+kotlin {
+    jvmToolchain(17)
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
+tasks.test {
+    useJUnitPlatform()
 }
 
 application {
